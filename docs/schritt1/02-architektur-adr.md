@@ -60,7 +60,7 @@ src/
 │   └── useMyProgram.ts
 ├── data/
 │   └── conference-data.json
-├── views/
+├── pages/
 │   ├── HomeView.vue
 │   ├── ProgramView.vue
 │   └── MyProgramView.vue
@@ -72,7 +72,7 @@ Die Ordnerstruktur wird bei Bedarf erweitert. Komponenten, die ausschließlich z
 
 ## 6. Komponentenübersicht
 
-- **Views / Seiten:** `HomeView.vue`, `ProgramView.vue` und `MyProgramView.vue` bilden die einzelnen Seiten der Anwendung.
+- **Pages / Seiten:** `HomeView.vue`, `ProgramView.vue` und `MyProgramView.vue` bilden die einzelnen Seiten der Anwendung.
 - **Layout-Komponenten:** `AppHeader.vue`, `AppFooter.vue` und `DefaultLayout.vue` stellen den gemeinsamen Seitenaufbau bereit.
 - **Base/UI-Komponenten:** `BaseButton.vue`, `BaseCard.vue` und `BaseInput.vue` sind allgemeine, wiederverwendbare UI-Elemente.
 - **Feature-Komponenten:** `SessionCard.vue` zeigt eine Session an, `SessionFilter.vue` stellt Filteroptionen dar und `MyProgram.vue` zeigt das persönliche Programm.
