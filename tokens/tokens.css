@@ -1,0 +1,52 @@
+:root {
+  /* Primitive Farb-Tokens */
+  --blue-baby: #B8DDF2;
+  --blue-ice: #EDF7FC;
+  --blue-navy: #213B50;
+  --blue-slate: #425F73;
+  --cream: #FFF9F1;
+  --peach: #F2B6A0;
+  --white: #FFFFFF;
+
+  /* Primitive Schrift-Tokens */
+  --font-family-nunito: 'Nunito', sans-serif;
+  --font-family-inter: 'Inter', sans-serif;
+  --font-size-1: 14px;
+  --font-size-2: 16px;
+  --font-size-3: 20px;
+  --font-size-4: 24px;
+  --font-size-5: 36px;
+
+  /* Primitive Spacing-Tokens */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+
+  /* Semantische Farben */
+  --color-background: var(--blue-ice);
+  --color-surface: var(--white);
+  --color-surface-accent: var(--blue-baby);
+  --color-text-primary: var(--blue-navy);
+  --color-text-secondary: var(--blue-slate);
+  --color-button-background: var(--blue-navy);
+  --color-button-text: var(--white);
+  --color-border-strong: var(--blue-slate);
+  --color-decorative-accent: var(--peach);
+
+  /* Semantische Typografie */
+  --font-heading: var(--font-family-nunito);
+  --font-body: var(--font-family-inter);
+  --text-small: var(--font-size-1);
+  --text-body: var(--font-size-2);
+  --text-card-title: var(--font-size-3);
+  --text-section-title: var(--font-size-4);
+  --text-page-title: var(--font-size-5);
+
+  /* Semantische Abstände */
+  --space-inline: var(--space-2);
+  --space-card: var(--space-3);
+  --space-section: var(--space-4);
+  --space-page: var(--space-5);
+}
