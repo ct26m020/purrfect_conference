@@ -4,7 +4,7 @@
 
 Die Plattform **Purrfect Conference** verwendet `conference-data.json` als zentralen, statischen Datensatz für die Konferenz. Darin werden die verfügbaren Sessions mit eindeutigen IDs und ihren Eigenschaften gespeichert, beispielsweise Titel, Beschreibung, Track, Datum, Startzeit und Speaker. Die Daten werden über das Composable `useConferenceData()` bereitgestellt. Dieses lädt den Datensatz beim Start der Anwendung und stellt ihn reaktiv zur Verfügung. Bei einer statischen JSON-Datei, die direkt in die Anwendung importiert wird, übernimmt der Build-Prozess die Bereitstellung; ein zusätzlicher HTTP-Aufruf ist nicht erforderlich.
 
-Die Seiten und Feature-Komponenten greifen auf dasselbe Composable zu, statt den Datensatz jeweils separat zu laden oder eigene Kopien anzulegen. Dadurch verwenden `ProgramView.vue`, `SessionCard.vue` und `MyProgramView.vue` eine einheitliche Datenquelle. Abgeleitete Daten, etwa eine gefilterte Session-Liste, werden aus dem gemeinsamen Datensatz berechnet und nicht als zusätzliche, unabhängige Kopie gespeichert.
+Die Seiten und Feature-Komponenten greifen auf dasselbe Composable zu, statt den Datensatz jeweils separat zu laden oder eigene Kopien anzulegen. Dadurch verwenden die Seite `pages/program.vue`, die Komponente `SessionCard.vue` und die Seite `pages/my-program.vue` eine einheitliche Datenquelle. Abgeleitete Daten, etwa eine gefilterte Session-Liste, werden aus dem gemeinsamen Datensatz berechnet und nicht als zusätzliche, unabhängige Kopie gespeichert.
 
 ## 2. Personalisierter State für „Mein Programm“
 
@@ -14,7 +14,7 @@ Beim Initialisieren liest `useMyProgram()` die gespeicherten IDs aus `localStora
 
 ## 3. Reaktivität und Zusammenspiel der Komponenten
 
-Vue-Reaktivität sorgt dafür, dass Komponenten, die den State von `useMyProgram()` verwenden, nach einer Änderung automatisch aktualisiert werden. `SessionCard.vue` kann anhand der Session-ID erkennen, ob eine Session bereits ausgewählt ist, und die passende Schaltfläche anzeigen. `MyProgramView.vue` ermittelt die vollständigen Session-Objekte, indem es die gespeicherten IDs mit dem Datensatz aus `useConferenceData()` abgleicht. So bleiben Auswahl und Konferenzdaten logisch getrennt, können aber gemeinsam dargestellt werden.
+Vue-Reaktivität sorgt dafür, dass Komponenten, die den State von `useMyProgram()` verwenden, nach einer Änderung automatisch aktualisiert werden. `SessionCard.vue` kann anhand der Session-ID erkennen, ob eine Session bereits ausgewählt ist, und die passende Schaltfläche anzeigen. Die Seite `my-program.vue` ermittelt die vollständigen Session-Objekte, indem sie die gespeicherten IDs mit dem Datensatz aus `useConferenceData()` abgleicht. So bleiben Auswahl und Konferenzdaten logisch getrennt, können aber gemeinsam dargestellt werden.
 
 ## 4. Laden, Speichern und Rehydration
 
@@ -25,9 +25,9 @@ Die gemeinsamen Konferenzdaten stehen beim Anwendungsstart zur Verfügung. Der p
 ```mermaid
 flowchart TD
     A["conference-data.json"] --> B["useConferenceData()"]
-    B --> C["ProgramView.vue"]
+    B --> C["pages/program.vue"]
     B --> D["SessionCard.vue"]
-    B --> E["MyProgramView.vue"]
+    B --> E["pages/my-program.vue"]
 
     F["localStorage: Session-IDs"] -->|"Initialisierung / Rehydration"| G["useMyProgram()"]
     G --> D
