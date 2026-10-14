@@ -1,5 +1,7 @@
 :root {
-  /* Primitive Farb-Tokens */
+
+      /* --------------------------------------------PRIMITIVE TOKENS------------------------------------------------------- */
+  /* Primitive Farb-Tokens: konkrete Rohwerte */
   --blue-baby: #B8DDF2;
   --blue-ice: #EDF7FC;
   --blue-navy: #213B50;
@@ -23,6 +25,8 @@
   --space-3: 16px;
   --space-4: 24px;
   --space-5: 32px;
+
+  /* ---------------------------------------------SEMANTISCHE TOKENS------------------------------------------------------- */
 
   /* Semantische Farben */
   --color-background: var(--blue-ice);
