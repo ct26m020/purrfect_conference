@@ -14,23 +14,25 @@ const speakerNames = computed(() => getSessionSpeakers(props.session).map(speake
 
 <template>
   <BaseCard class="session-card">
-    <div class="session-card__badges">
-      <span class="session-card__track">{{ trackName }}</span>
-      <span class="session-card__tag">{{ session.format }}</span>
-      <span class="session-card__tag">{{ session.level }}</span>
-    </div>
-
     <h3>{{ session.title }}</h3>
-
     <p class="session-card__meta">
       {{ session.day }} · {{ session.startTime }}–{{ session.endTime }} Uhr · {{ roomName }}
     </p>
+
     <p class="session-card__speakers">{{ speakerNames }}</p>
     <p class="session-card__abstract">{{ session.abstract }}</p>
 
-    <BaseButton class="session-card__button" @click="emit('toggle', session.id)">
-      {{ selected ? 'Aus meinem Programm entfernen' : 'Zu meinem Programm hinzufügen' }}
-    </BaseButton>
+    <div class="session-card__footer">
+      <div class="session-card__badges">
+        <span class="session-card__track">{{ trackName }}</span>
+        <span class="session-card__tag">{{ session.format }}</span>
+        <span class="session-card__tag">{{ session.level }}</span>
+      </div>
+      <BaseButton class="session-card__button" @click="emit('toggle', session.id)">
+        {{ selected ? 'Aus meinem Programm entfernen' : 'Zu meinem Programm hinzufügen' }}
+      </BaseButton>
+    </div>
+
   </BaseCard>
 </template>
 
@@ -50,7 +52,7 @@ const speakerNames = computed(() => getSessionSpeakers(props.session).map(speake
 
 .session-card__track {
   display: inline-block;
-  padding: var(--space-1) var(--space-2);
+  padding: var(--space-2) var(--space-3);
   border-radius: 999px;
   background-color: var(--color-surface-accent);
   color: var(--color-text-primary);
@@ -60,7 +62,7 @@ const speakerNames = computed(() => getSessionSpeakers(props.session).map(speake
 
 .session-card__tag {
   display: inline-block;
-  padding: var(--space-1) var(--space-2);
+  padding: var(--space-2) var(--space-3);
   border-radius: 999px;
   border: 1px solid var(--color-border-strong);
   color: var(--color-text-secondary);
@@ -86,5 +88,10 @@ const speakerNames = computed(() => getSessionSpeakers(props.session).map(speake
 .session-card__button {
   align-self: flex-start;
   margin-top: var(--space-1);
+}
+
+.session-card__footer {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

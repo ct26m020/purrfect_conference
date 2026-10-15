@@ -9,6 +9,7 @@
   --cream: #FFF9F1;
   --peach: #F2B6A0;
   --white: #FFFFFF;
+  --dark-grey: #333333;
 
   /* Primitive Schrift-Tokens */
   --font-family-nunito: 'Nunito', sans-serif;
@@ -38,6 +39,8 @@
   --color-button-text: var(--white);
   --color-border-strong: var(--blue-slate);
   --color-decorative-accent: var(--peach);
+  --color-shadow: color-mix(in srgb, var(--dark-grey) 20%, transparent);
+  --color-shadow-hover: color-mix(in srgb, var(--peach) 80%, transparent);
 
   /* Semantische Typografie */
   --font-heading: var(--font-family-nunito);
