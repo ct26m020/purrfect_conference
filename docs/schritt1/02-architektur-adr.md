@@ -41,7 +41,7 @@ Als Nachteil entstehen mehr Dateien und ein gewisser initialer Planungsaufwand. 
 Die Struktur folgt den Verzeichniskonventionen von Nuxt 4, bei denen der Anwendungscode im `app/`-Verzeichnis liegt:
 
 ```text
-src/
+purrfect_conference
 ├── app/
 │   ├── assets/
 │   │   └── styles/

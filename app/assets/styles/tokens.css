@@ -1,0 +1,5 @@
+/*
+ * Bindet die zentralen Design Tokens (Deliverable aus Schritt A) in die Anwendung ein.
+ * Einzige Quelle der Token-Definitionen: /tokens/tokens.css – hier wird nichts dupliziert.
+ */
+@import "../../../tokens/tokens.css";

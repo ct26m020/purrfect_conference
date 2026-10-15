@@ -1,0 +1,49 @@
+/* Globale Basis-Styles auf Grundlage der Design Tokens */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+  line-height: 1.2;
+  margin: 0 0 var(--space-3);
+}
+
+h1 {
+  font-size: var(--text-page-title);
+}
+
+h2 {
+  font-size: var(--text-section-title);
+}
+
+h3 {
+  font-size: var(--text-card-title);
+}
+
+p {
+  margin: 0 0 var(--space-3);
+}
+
+a {
+  color: var(--color-text-primary);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-decorative-accent);
+  outline-offset: 2px;
+}
