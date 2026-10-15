@@ -1,18 +1,27 @@
 # Purrfect Conference
 
-Purrfect Conference is a web application for a fictional frontend conference.
-Users can explore sessions, view speaker profiles and create their own personal schedule.
+Purrfect Conference is a Nuxt 4 prototype for a fictional frontend conference.
+It showcases a branded conference landing page, a structured data model for sessions and speakers,
+and a foundation for a personal conference planner.
 
 > "A purrfect plan for your conference"
+
+## Features
+
+- Landing page with conference branding and a session count summary
+- Central conference data layer
+- Shared layout with header and footer
+- Design-token based styling and global app theming
+- Planned personal program flow with session selection and persistence
 
 ## Technologies
 
 - Nuxt 4
 - Vue 3
 - TypeScript
-- CSS Design Tokens
-- JSON for conference data
-- localStorage for saving personal sessions (planned)
+- CSS design tokens
+- JSON-based conference data
+- localStorage planned for saving a personal conference program
 
 ## Requirements
 
@@ -46,7 +55,9 @@ npm run dev
 
 **5. Open the application**
 
+```text
 http://localhost:3000
+```
 
 ## Build
 
@@ -64,21 +75,27 @@ npm run preview
 
 ## Project Structure
 
-- `app/` – Application code (Nuxt 4 convention)
-  - `assets/styles/` – Token import and global base styles
-  - `components/` – `base/`, `features/` and `layout/` components
+- `app/` – Nuxt application code
+  - `assets/styles/` – Global styles and token imports
+  - `components/` – Reusable base, feature, and layout components
   - `composables/` – `useConferenceData`, `useSessionFilter`, `useMyProgram`
-  - `data/conference-data.json` – Conference data (sessions, tracks, speakers)
-  - `layouts/default.vue` – Shared page layout (header, main, footer)
-  - `pages/` – File-based routing: `index.vue`, `program.vue`, `my-program.vue`
-- `public/` – Static files
-- `tokens/tokens.css` – Design tokens (colors, typography, spacing); imported into the app via `app/assets/styles/tokens.css`
-- `docs/schritt1/` – Planning and architecture documentation
+  - `data/conference-data.json` – Conference sessions, tracks, rooms, and speaker data
+  - `layouts/default.vue` – Shared app shell
+  - `pages/` – File-based routes such as `index.vue`, `program.vue`, and `my-program.vue`
+- `public/` – Static assets
+- `tokens/tokens.css` – Shared design tokens
+- `docs/schritt1/` – Architecture and planning notes
 - `nuxt.config.ts` – Nuxt configuration
 
 ## Project Status
 
-The project is currently in Step 1: Planning, Architecture and Skeleton.
-The skeleton includes the folder structure from ADR-02, the design tokens from `tokens/tokens.css`,
-a minimal branded layout and a functional proof that `conference-data.json` is loaded
-(the session count is displayed on the home page and the sessions are listed on the program page).
+The app includes the Nuxt shell, conference data loading, a filterable program view,
+and a personal conference planner that stores session selections in `localStorage`.
+
+Current implemented features:
+- searchable and filterable program page
+- session cards with track, time, room, speaker, and abstract details
+- add/remove session actions for a personal program
+- persisted personal selections in the browser
+
+The app remains intentionally lightweight and easy to extend for future enhancements such as speaker pages or more advanced planning interactions.

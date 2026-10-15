@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { Session } from '~/composables/useConferenceData'
 
-const props = defineProps<{ session: Session }>()
+const props = defineProps<{ session: Session; selected?: boolean }>()
+
+const emit = defineEmits<{ toggle: [sessionId: string] }>()
 
 const { getTrack, getRoom, getSessionSpeakers } = useConferenceData()
 
@@ -17,21 +19,33 @@ const speakerNames = computed(() => getSessionSpeakers(props.session).map(speake
       <span class="session-card__tag">{{ session.format }}</span>
       <span class="session-card__tag">{{ session.level }}</span>
     </div>
+
     <h3>{{ session.title }}</h3>
+
     <p class="session-card__meta">
       {{ session.day }} · {{ session.startTime }}–{{ session.endTime }} Uhr · {{ roomName }}
     </p>
     <p class="session-card__speakers">{{ speakerNames }}</p>
     <p class="session-card__abstract">{{ session.abstract }}</p>
+
+    <BaseButton class="session-card__button" @click="emit('toggle', session.id)">
+      {{ selected ? 'Aus meinem Programm entfernen' : 'Zu meinem Programm hinzufügen' }}
+    </BaseButton>
   </BaseCard>
 </template>
 
 <style scoped>
+.session-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
 .session-card__badges {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-1);
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-1);
 }
 
 .session-card__track {
@@ -54,18 +68,23 @@ const speakerNames = computed(() => getSessionSpeakers(props.session).map(speake
 }
 
 .session-card__meta {
-  margin-bottom: var(--space-1);
+  margin-bottom: 0;
   color: var(--color-text-secondary);
   font-size: var(--text-small);
 }
 
 .session-card__speakers {
-  margin-bottom: var(--space-2);
+  margin-bottom: 0;
   font-weight: 600;
   font-size: var(--text-small);
 }
 
 .session-card__abstract {
   margin-bottom: 0;
+}
+
+.session-card__button {
+  align-self: flex-start;
+  margin-top: var(--space-1);
 }
 </style>
