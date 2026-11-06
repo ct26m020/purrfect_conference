@@ -1,7 +1,18 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import conferenceData from './app/data/conference-data.json'
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+
+  nitro: {
+    prerender: {
+      routes: [
+        ...conferenceData.speakers.map(speaker => `/speakers/${speaker.id}`),
+        ...conferenceData.sessions.map(session => `/sessions/${session.id}`),
+      ],
+    },
+  },
 
   // Auto-Import ohne Pfad-Präfix, damit z. B. features/sessions/SessionCard.vue
   // als <SessionCard> verwendet werden kann (siehe ADR-02).

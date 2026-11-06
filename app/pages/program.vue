@@ -8,7 +8,8 @@ const {
   dayOptions,
   selectedLevel,
   levelOptions,
-  filteredSessions
+  filteredSessions,
+  resetFilters
 } = useSessionFilter(sessions)
 const { selectedSessionIds, addSession, removeSession } = useMyProgram()
 
@@ -37,6 +38,7 @@ function toggleSession(sessionId: string) {
       :track-options="trackOptions"
       :day-options="dayOptions"
       :level-options="levelOptions"
+      @reset="resetFilters"
     />
 
     <div v-if="filteredSessions.length === 0" class="program-page__empty">

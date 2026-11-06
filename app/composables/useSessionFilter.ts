@@ -26,6 +26,13 @@ export function useSessionFilter(sessions: Ref<Session[]>) {
   const dayOptions = computed(() => [...new Set(sessions.value.map(session => session.day))])
   const levelOptions = computed(() => [...new Set(sessions.value.map(session => session.level))])
 
+  function resetFilters() {
+    searchTerm.value = ''
+    selectedTrack.value = null
+    selectedDay.value = null
+    selectedLevel.value = null
+  }
+
   const filteredSessions = computed(() => {
     const normalizedSearch = searchTerm.value.trim().toLowerCase()
 
@@ -55,6 +62,7 @@ export function useSessionFilter(sessions: Ref<Session[]>) {
     dayOptions,
     selectedLevel,
     levelOptions,
-    filteredSessions
+    filteredSessions,
+    resetFilters
   }
 }

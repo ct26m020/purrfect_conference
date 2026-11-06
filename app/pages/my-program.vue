@@ -22,7 +22,7 @@ const selectedSessions = computed(() =>
         <div class="my-program-page__content">
           <div>
             <p class="my-program-page__meta">{{ session.day }} · {{ session.startTime }}–{{ session.endTime }} Uhr</p>
-            <h3>{{ session.title }}</h3>
+            <h3><NuxtLink class="my-program-page__title-link" :to="`/sessions/${session.id}`">{{ session.title }}</NuxtLink></h3>
           </div>
           <BaseButton @click="removeSession(session.id)">Entfernen</BaseButton>
         </div>
@@ -57,5 +57,20 @@ const selectedSessions = computed(() =>
   justify-content: space-between;
   align-items: center;
   gap: var(--space-3);
+}
+
+.my-program-page__title-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.my-program-page__title-link:hover,
+.my-program-page__title-link:focus-visible {
+  text-decoration: underline;
+}
+
+.my-program-page__title-link:focus-visible {
+  outline: 2px solid var(--color-border-strong);
+  outline-offset: 3px;
 }
 </style>

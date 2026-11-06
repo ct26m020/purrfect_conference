@@ -9,17 +9,21 @@ const { getTrack, getRoom, getSessionSpeakers } = useConferenceData()
 
 const trackName = computed(() => getTrack(props.session.trackId)?.name ?? props.session.trackId)
 const roomName = computed(() => getRoom(props.session.roomId)?.name ?? props.session.roomId)
-const speakerNames = computed(() => getSessionSpeakers(props.session).map(speaker => speaker.name).join(', '))
+const sessionSpeakers = computed(() => getSessionSpeakers(props.session))
 </script>
 
 <template>
   <BaseCard class="session-card">
-    <h3>{{ session.title }}</h3>
+    <h3><NuxtLink class="session-card__title-link" :to="`/sessions/${session.id}`">{{ session.title }}</NuxtLink></h3>
     <p class="session-card__meta">
       {{ session.day }} · {{ session.startTime }}–{{ session.endTime }} Uhr · {{ roomName }}
     </p>
 
-    <p class="session-card__speakers">{{ speakerNames }}</p>
+    <p class="session-card__speakers">
+      <NuxtLink v-for="(speaker, index) in sessionSpeakers" :key="speaker.id" :to="`/speakers/${speaker.id}`">
+        {{ speaker.name }}<span v-if="index < sessionSpeakers.length - 1">, </span>
+      </NuxtLink>
+    </p>
     <p class="session-card__abstract">{{ session.abstract }}</p>
 
     <div class="session-card__footer">
@@ -83,6 +87,21 @@ const speakerNames = computed(() => getSessionSpeakers(props.session).map(speake
 
 .session-card__abstract {
   margin-bottom: 0;
+}
+
+.session-card__title-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.session-card__title-link:hover,
+.session-card__title-link:focus-visible {
+  text-decoration: underline;
+}
+
+.session-card__title-link:focus-visible {
+  outline: 2px solid var(--color-border-strong);
+  outline-offset: 3px;
 }
 
 .session-card__button {

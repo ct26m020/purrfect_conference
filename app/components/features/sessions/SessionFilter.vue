@@ -14,6 +14,7 @@ const emit = defineEmits<{
   'update:selectedTrack': [value: string | null]
   'update:selectedDay': [value: string | null]
   'update:selectedLevel': [value: string | null]
+  reset: []
 }>()
 
 const onSearchChange = (value: string) => emit('update:searchTerm', value)
@@ -60,6 +61,10 @@ const onLevelChange = (event: Event) => {
         <option v-for="level in levelOptions" :key="level" :value="level">{{ level }}</option>
       </select>
     </div>
+
+    <div class="session-filter__reset">
+      <BaseButton @click="emit('reset')">Filter zurücksetzen</BaseButton>
+    </div>
   </div>
 </template>
 
@@ -79,6 +84,11 @@ const onLevelChange = (event: Event) => {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
+}
+
+.session-filter__reset {
+  display: flex;
+  align-items: end;
 }
 
 .session-filter__label {
