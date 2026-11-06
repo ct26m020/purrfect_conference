@@ -60,6 +60,13 @@ export function useConferenceData() {
       .filter((speaker): speaker is Speaker => speaker !== undefined)
   }
 
+    function getSession(id: string) {
+    return sessions.value.find(s => s.id === id)
+  }
+
+  function getSpeaker(id: string) {
+    return speakers.value.find(s => s.id === id)
+  }
   return {
     conference,
     sessions,
