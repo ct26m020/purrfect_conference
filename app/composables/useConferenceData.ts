@@ -77,5 +77,7 @@ export function useConferenceData() {
     getTrack,
     getRoom,
     getSessionSpeakers,
+    getSession,
+    getSpeaker
   }
 }
