@@ -5,6 +5,8 @@ export function useSessionFilter(sessions: Ref<Session[]>) {
   const { getTrack, speakers } = useConferenceData()
   const searchTerm = ref('')
   const selectedTrack = ref<string | null>(null)
+  const selectedDay = ref<string | null>(null)
+  const selectedLevel = ref<string | null>(null)
 
   const trackOptions = computed(() => {
     const seen = new Set<string>()
@@ -21,11 +23,16 @@ export function useSessionFilter(sessions: Ref<Session[]>) {
     }, [])
   })
 
+  const dayOptions = computed(() => [...new Set(sessions.value.map(session => session.day))])
+  const levelOptions = computed(() => [...new Set(sessions.value.map(session => session.level))])
+
   const filteredSessions = computed(() => {
     const normalizedSearch = searchTerm.value.trim().toLowerCase()
 
     return sessions.value.filter(session => {
       const matchesTrack = !selectedTrack.value || session.trackId === selectedTrack.value
+      const matchesDay = !selectedDay.value || session.day === selectedDay.value
+      const matchesLevel = !selectedLevel.value || session.level === selectedLevel.value
       const matchesSearch =
         normalizedSearch.length === 0 ||
         session.title.toLowerCase().includes(normalizedSearch) ||
@@ -36,9 +43,18 @@ export function useSessionFilter(sessions: Ref<Session[]>) {
           return speaker?.name.toLowerCase().includes(normalizedSearch)
         })
 
-      return matchesTrack && matchesSearch
+      return matchesTrack && matchesDay && matchesLevel && matchesSearch
     })
   })
 
-  return { searchTerm, selectedTrack, trackOptions, filteredSessions }
+  return {
+    searchTerm,
+    selectedTrack,
+    trackOptions,
+    selectedDay,
+    dayOptions,
+    selectedLevel,
+    levelOptions,
+    filteredSessions
+  }
 }

@@ -1,6 +1,15 @@
 <script setup lang="ts">
 const { sessions } = useConferenceData()
-const { searchTerm, selectedTrack, trackOptions, filteredSessions } = useSessionFilter(sessions)
+const {
+  searchTerm,
+  selectedTrack,
+  trackOptions,
+  selectedDay,
+  dayOptions,
+  selectedLevel,
+  levelOptions,
+  filteredSessions
+} = useSessionFilter(sessions)
 const { selectedSessionIds, addSession, removeSession } = useMyProgram()
 
 function toggleSession(sessionId: string) {
@@ -23,7 +32,11 @@ function toggleSession(sessionId: string) {
     <SessionFilter
       v-model:search-term="searchTerm"
       v-model:selected-track="selectedTrack"
+      v-model:selected-day="selectedDay"
+      v-model:selected-level="selectedLevel"
       :track-options="trackOptions"
+      :day-options="dayOptions"
+      :level-options="levelOptions"
     />
 
     <div v-if="filteredSessions.length === 0" class="program-page__empty">
