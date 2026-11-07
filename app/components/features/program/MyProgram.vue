@@ -1,5 +1,9 @@
 <script setup lang="ts">
-const { sessions } = useConferenceData()
+import type { Session } from '~/composables/useConferenceData'
+
+// Aktuelle Zeiten von der Server-Route, damit Zeitplanänderungen auch hier ankommen
+const { data } = await useFetch<Session[]>('/api/sessions')
+const sessions = computed(() => data.value ?? [])
 const { selectedSessionIds, removeSession } = useMyProgram()
 
 const selectedSessions = computed(() =>

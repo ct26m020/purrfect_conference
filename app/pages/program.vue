@@ -1,5 +1,10 @@
 <script setup lang="ts">
-const { sessions } = useConferenceData()
+import type { Session } from '~/composables/useConferenceData'
+
+// Sessions kommen zur Laufzeit von der Server-Route, damit die Übersicht nach einer
+// Zeitplanänderung dieselben Zeiten zeigt wie die Detailseiten (siehe ADR Schritt 2, Abschnitt 3)
+const { data } = await useFetch<Session[]>('/api/sessions')
+const sessions = computed(() => data.value ?? [])
 const {
   searchTerm,
   selectedTrack,

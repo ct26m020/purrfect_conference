@@ -7,6 +7,10 @@ type Session = (typeof conferenceData.sessions)[number]
 // Nach einem Neustart des Servers gilt wieder der Stand aus der JSON-Datei.
 const sessions: Session[] = structuredClone(conferenceData.sessions)
 
+export function getSessions() {
+  return sessions
+}
+
 export function findSession(id: string) {
   return sessions.find(session => session.id === id)
 }
