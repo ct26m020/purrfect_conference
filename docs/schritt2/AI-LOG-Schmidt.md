@@ -19,12 +19,13 @@ vier Entscheidungspunkte im Schema Kontext → Optionen [mind. 2] → Entscheidu
 ## Features
 
 **Tool:** Claude Opus 5.5
-**Prompt:** 
-**Zweck:**
+**Prompt:** Gib mir eine Schritt für Schritt Anleitung für folgende Features: Eigene Route pro Session (z. B. /sessions/[id] ) mit Titel, Abstract, Zeit (Tag, Start-/Endzeit), Raum, Track, Level, Format, Links zu den zugehörigen Speaker Profilen. Deliverable: für alle 20 Sessions korrekt befüllte, von der Übersicht erreichbare
+Detailseite. Aber beachte die im ADR festgelegten Entscheidungen
+**Zweck:** Schritt für Schritt Anleitung zum Umsetzen der Anforderungen
 
 **Tool:** Claude Opus 5.5
-**Prompt:** 
-**Zweck:**
+**Prompt:** Prüfe ob alle Anforderungen und die ADR erfüllt sind
+**Zweck:** Überprüfung ob alles richtig umgesetzt wurde
 
 **Tool:** Claude Opus 5.5
 **Prompt:** 

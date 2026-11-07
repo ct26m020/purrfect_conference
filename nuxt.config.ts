@@ -5,13 +5,18 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
 
+  // Rendering-Strategie, siehe docs/schritt2/01-rendering-strategie-adr.md
   nitro: {
     prerender: {
-      routes: [
-        ...conferenceData.speakers.map(speaker => `/speakers/${speaker.id}`),
-        ...conferenceData.sessions.map(session => `/sessions/${session.id}`),
-      ],
+      // Speaker-Profile: SSG
+      routes: conferenceData.speakers.map(speaker => `/speakers/${speaker.id}`),
     },
+  },
+
+  routeRules: {
+    // Session-Detailseiten: ISR, Nuxts `isr` wirkt nur auf Vercel/Netlify
+    // auf dem Node-Server ist `swr` dasselbe: gecachte Seite, nach 60 s Neuaufbau im Hintergrund
+    '/sessions/**': { swr: 60 },
   },
 
   // Auto-Import ohne Pfad-Präfix, damit z. B. features/sessions/SessionCard.vue

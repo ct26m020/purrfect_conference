@@ -1,11 +1,19 @@
 <script setup lang="ts">
-const route = useRoute()
-const { getSession, getSessionSpeakers, getTrack, getRoom } = useConferenceData()
-const session = getSession(String(route.params.id))
+import type { Session } from '~/composables/useConferenceData'
 
-if (!session) {
+const route = useRoute()
+const { getSessionSpeakers, getTrack, getRoom } = useConferenceData()
+
+// Die Session kommt zur Laufzeit von der Server-Route, damit Zeitplanänderungen
+// ohne neuen Build ankommen (ISR, siehe ADR Schritt 2)
+// Track-, Raum- und Speaker-Namen bleiben statisch aus dem JSON-Datensatz
+const { data } = await useFetch<Session>(`/api/sessions/${route.params.id}`)
+
+if (!data.value) {
   throw createError({ statusCode: 404, statusMessage: 'Session not found' })
 }
+
+const session = data.value
 
 const speakers = computed(() => getSessionSpeakers(session))
 const trackName = computed(() => getTrack(session.trackId)?.name ?? session.trackId)
