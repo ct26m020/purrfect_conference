@@ -19,7 +19,13 @@ function readStoredSessionIds(): string[] {
 }
 
 export function useMyProgram() {
-  const selectedSessionIds = ref<string[]>(readStoredSessionIds())
+  // Startet leer, damit Server- und Browserdarstellung beim Hydrieren übereinstimmen.
+  // Die gespeicherte Auswahl wird erst nach dem Mounten geladen (siehe ADR Schritt 2, Abschnitt 4).
+  const selectedSessionIds = ref<string[]>([])
+
+  onMounted(() => {
+    selectedSessionIds.value = readStoredSessionIds()
+  })
 
   function persistSessionIds() {
     if (!import.meta.client) {
@@ -40,16 +46,6 @@ export function useMyProgram() {
     selectedSessionIds.value = selectedSessionIds.value.filter(existingId => existingId !== id)
     persistSessionIds()
   }
-
-  watch(
-    selectedSessionIds,
-    () => {
-      if (import.meta.client) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(selectedSessionIds.value))
-      }
-    },
-    { deep: true },
-  )
 
   return { selectedSessionIds, addSession, removeSession }
 }

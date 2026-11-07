@@ -17,6 +17,8 @@ export default defineNuxtConfig({
     // Session-Detailseiten: ISR, Nuxts `isr` wirkt nur auf Vercel/Netlify
     // auf dem Node-Server ist `swr` dasselbe: gecachte Seite, nach 60 s Neuaufbau im Hintergrund
     '/sessions/**': { swr: 60 },
+    // „Mein Programm“: CSR, die Auswahl liegt nur im localStorage des Browsers
+    '/my-program': { ssr: false },
   },
 
   // Auto-Import ohne Pfad-Präfix, damit z. B. features/sessions/SessionCard.vue
