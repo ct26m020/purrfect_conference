@@ -81,6 +81,23 @@ The app is then available at `http://localhost:3000`. Alternatively, the server 
 
 > Do not use `npm run generate` for this project. It renders every page as a static file, so the session pages and the program page would lose their ISR behaviour and the API routes would not be available.
 
+## Progressive Web App
+
+The app uses `@vite-pwa/nuxt` to provide its web app manifest and register a service worker. The manifest uses the existing theme colors and app icons in `public/`.
+
+Build and preview the production app from the project root:
+
+```bash
+npm run build
+npm run preview
+```
+
+Open `http://localhost:3000` in Chrome. In DevTools:
+
+1. Open **Application > Manifest** to check the app name, standalone display, colors, start URL, and both icon sizes.
+2. Open **Application > Service Workers** to confirm that `/sw.js` is registered and activated for the page.
+3. Check that Chrome offers **Install app** in the address bar or under the browser's **Save and share** menu. The page must be served from `localhost` or a secure HTTPS origin.
+
 ## Rendering Strategy
 
 Each part of the app uses its own rendering strategy. The reasoning is documented in `docs/schritt2/01-rendering-strategie-adr.md`.

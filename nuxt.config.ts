@@ -4,6 +4,44 @@ import conferenceData from './app/data/conference-data.json'
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+  modules: ['@vite-pwa/nuxt'],
+
+  pwa: {
+    injectRegister: 'auto',
+    registerType: 'autoUpdate',
+    includeManifest: false,
+    includeManifestIcons: false,
+    manifest: {
+      name: 'Purrfect Conference',
+      short_name: 'Purrfect',
+      description: 'A purrfect plan for your conference',
+      start_url: '/',
+      scope: '/',
+      lang: 'de',
+      display: 'standalone',
+      theme_color: '#213B50',
+      background_color: '#EDF7FC',
+      icons: [
+        {
+          src: '/pwa-192x192.png',
+          sizes: '192x192',
+          type: 'image/png',
+        },
+        {
+          src: '/pwa-512x512.png',
+          sizes: '512x512',
+          type: 'image/png',
+        },
+      ],
+    },
+    // Keep application-shell and conference-data caching for Task C.
+    generateSW: {
+      globPatterns: [],
+      globIgnores: ['**/*'],
+      globStrict: false,
+      navigateFallback: null,
+    },
+  },
 
   // Rendering-Strategie, siehe docs/schritt2/01-rendering-strategie-adr.md
   nitro: {
