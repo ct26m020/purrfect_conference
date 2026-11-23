@@ -83,7 +83,7 @@ The app is then available at `http://localhost:3000`. Alternatively, the server 
 
 ## Progressive Web App
 
-The app uses `@vite-pwa/nuxt` to provide its web app manifest and register a service worker. The manifest uses the existing theme colors and app icons in `public/`.
+The app uses `@vite-pwa/nuxt` to provide its web app manifest and register a service worker. It precaches the home and `/my-program` HTML, built JavaScript and CSS, and local icons. Google Fonts use Cache First after they have been loaded online. Speaker pages and payloads are excluded from this cache; session and speaker data caching is handled separately.
 
 Build and preview the production app from the project root:
 
@@ -95,8 +95,9 @@ npm run preview
 Open `http://localhost:3000` in Chrome. In DevTools:
 
 1. Open **Application > Manifest** to check the app name, standalone display, colors, start URL, and both icon sizes.
-2. Open **Application > Service Workers** to confirm that `/sw.js` is registered and activated for the page.
+2. Open **Application > Service Workers** to confirm that `/sw.js` is registered and activated. Under **Cache Storage**, check that the Workbox precache contains `/`, `/my-program`, app scripts, styles, and icons.
 3. Check that Chrome offers **Install app** in the address bar or under the browser's **Save and share** menu. The page must be served from `localhost` or a secure HTTPS origin.
+4. Visit the home page and `/my-program` while online so the worker activates. In **Network**, select **Offline**, then reload each route. Their app shells should still render. Session details in My Program require the separate session-data cache.
 
 ## Rendering Strategy
 
@@ -107,7 +108,7 @@ Each part of the app uses its own rendering strategy. The reasoning is documente
 | `/speakers/:id` | SSG | `nitro.prerender.routes` |
 | `/sessions/:id` | ISR (regenerated after 60 s) | `routeRules: { swr: 60 }` |
 | `/program` | ISR + client-side filtering | `routeRules: { swr: 60 }` |
-| `/my-program` | CSR | `routeRules: { ssr: false }` |
+| `/my-program` | CSR (prerendered shell for offline use) | `routeRules: { ssr: false }` and `nitro.prerender.routes` |
 
 Nuxt's `isr` option only takes effect on platforms like Vercel or Netlify. On the Node server, `swr` provides the same behaviour.
 

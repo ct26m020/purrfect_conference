@@ -34,20 +34,39 @@ export default defineNuxtConfig({
         },
       ],
     },
-    // Keep application-shell and conference-data caching for Task C.
+    // Keep app-shell and static-asset caching separate from conf data rules
     generateSW: {
-      globPatterns: [],
-      globIgnores: ['**/*'],
+      //precache the app shell and local static assets for offline startup
+      globPatterns: ['**/*.{html,js,css,ico,png,svg,woff,woff2,ttf,otf}'],
+      // Flo: speaker pages and payloads 
+      globIgnores: ['speakers/**', '**/_payload.json'],
       globStrict: false,
       navigateFallback: null,
+      runtimeCaching: [
+        {
+          // pls doublecheck: cache Google Fonts after first use - no local font files exist yet
+          urlPattern: /^https:\/\/fonts\.(?:googleapis|gstatic)\.com\//i,
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'google-fonts',
+            expiration: {
+              maxEntries: 10,
+              maxAgeSeconds: 60 * 60 * 24 * 365,
+            },
+            cacheableResponse: {
+              statuses: [0, 200],
+            },
+          },
+        },
+      ],
     },
   },
 
-  // Rendering-Strategie, siehe docs/schritt2/01-rendering-strategie-adr.md
+  // Rendering-Strat
   nitro: {
     prerender: {
-      // Speaker-Profile: SSG
-      routes: conferenceData.speakers.map(speaker => `/speakers/${speaker.id}`),
+      // statically render the routes needed for offline app-shell startp
+      routes: ['/', '/my-program', ...conferenceData.speakers.map(speaker => `/speakers/${speaker.id}`)],
     },
   },
 
@@ -67,8 +86,6 @@ export default defineNuxtConfig({
     payloadExtraction: 'client',
   },
 
-  // Auto-Import ohne Pfad-Präfix, damit z. B. features/sessions/SessionCard.vue
-  // als <SessionCard> verwendet werden kann (siehe ADR-02).
   components: [{ path: '~/components', pathPrefix: false }],
 
   // Design Tokens (aus /tokens/tokens.css eingebunden) und globale Basis-Styles
