@@ -1,6 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import conferenceData from './app/data/conference-data.json'
 
+// Laufzeit-Caches für Session- und Speaker-Daten (Aufgabe C, siehe runtimeCaching unten)
+// Jeder Build bekommt eigene Cache-Namen. Sonst würde gecachtes HTML nach einem neuen
+// Build auf JS-Dateien verweisen, die es nicht mehr gibt, und die Seite wäre ohne Funktion
+// Caches älterer Builds löscht app/plugins/offline-cache.client.ts
+const OFFLINE_CACHE_VERSION = Date.now().toString(36)
+const OFFLINE_CACHE_NAMES = ['sessions-api', 'session-pages', 'speaker-pages']
+const offlineCacheName = (name: string) => `${name}-${OFFLINE_CACHE_VERSION}`
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
@@ -38,7 +46,7 @@ export default defineNuxtConfig({
     generateSW: {
       //precache the app shell and local static assets for offline startup
       globPatterns: ['**/*.{html,js,css,ico,png,svg,woff,woff2,ttf,otf}'],
-      // Flo: speaker pages and payloads 
+      // speaker pages and payloads are not precached, they use the runtime rules S2/S3 below
       globIgnores: ['speakers/**', '**/_payload.json'],
       globStrict: false,
       navigateFallback: null,
@@ -58,7 +66,61 @@ export default defineNuxtConfig({
             },
           },
         },
+
+        // Session- und Speaker-Daten
+        // B, Abschnitt 2: „Sessions und Speaker → Cache First“. Die Daten ändern sich nach
+        // der Veröffentlichung kaum, im Saal mit schlechtem WLAN zählt die schnelle Antwort.
+        // Cache First antwortet aus dem Cache und fragt das Netz nur, wenn noch nichts da ist.
+        // Gecacht wird nur Status 200, damit kein Fehler oder 404 im Cache hängen bleibt.
+        // Kein Ablaufdatum: Ein abgelaufener Eintrag würde offline sofort fehlen.
+        // Bewusst in Kauf genommen (B, Abschnitt 4): Zeitplanänderungen aus Schritt 2 (ISR)
+        // erreichen einen Browser mit gefülltem Cache erst nach dem nächsten Build.
+        {
+          // S1 – Session-API: /api/sessions (Programm, „Mein Programm“) und /api/sessions/:id (Detailseite).
+          // „Mein Programm“ wird nur im Browser gerendert und holt die Sessions immer hier.
+          urlPattern: ({ url, sameOrigin }) => sameOrigin && url.pathname.startsWith('/api/sessions'),
+          handler: 'CacheFirst',
+          options: {
+            cacheName: offlineCacheName('sessions-api'),
+            expiration: { maxEntries: 50 },
+            cacheableResponse: { statuses: [200] },
+          },
+        },
+        {
+          // S2 – Session-Seiten: /program und /sessions/:id rendert der Server zur Laufzeit (SWR),
+          // sie lassen sich also nicht beim Build precachen. Gilt für das HTML und für die
+          // _payload.json, die Nuxt bei Navigation innerhalb der App lädt.
+          urlPattern: ({ url, sameOrigin }) =>
+            sameOrigin && (url.pathname === '/program' || url.pathname.startsWith('/program/') || url.pathname.startsWith('/sessions/')),
+          handler: 'CacheFirst',
+          options: {
+            cacheName: offlineCacheName('session-pages'),
+            expiration: { maxEntries: 60 },
+            cacheableResponse: { statuses: [200] },
+          },
+        },
+        {
+          // S3 – Speaker-Seiten: beim Build vorgerendert (SSG), HTML und _payload.json.
+          // Laut B Cache First statt Precache: ein Profil landet im Cache, sobald es einmal geöffnet wurde.
+          urlPattern: ({ url, sameOrigin }) => sameOrigin && url.pathname.startsWith('/speakers/'),
+          handler: 'CacheFirst',
+          options: {
+            cacheName: offlineCacheName('speaker-pages'),
+            expiration: { maxEntries: 50 },
+            cacheableResponse: { statuses: [200] },
+          },
+        },
       ],
+    },
+  },
+
+  // Für app/plugins/offline-cache.client.ts: aktuelle Cache-Version und die Seiten,
+  // die beim ersten Besuch vorab in den Cache geladen werden
+  appConfig: {
+    offlineCache: {
+      version: OFFLINE_CACHE_VERSION,
+      names: OFFLINE_CACHE_NAMES,
+      warmUpUrls: ['/api/sessions', '/program'],
     },
   },
 

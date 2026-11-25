@@ -83,7 +83,17 @@ The app is then available at `http://localhost:3000`. Alternatively, the server 
 
 ## Progressive Web App
 
-The app uses `@vite-pwa/nuxt` to provide its web app manifest and register a service worker. It precaches the home and `/my-program` HTML, built JavaScript and CSS, and local icons. Google Fonts use Cache First after they have been loaded online. Speaker pages and payloads are excluded from this cache; session and speaker data caching is handled separately.
+The app uses `@vite-pwa/nuxt` to provide its web app manifest and register a service worker. It precaches the home and `/my-program` HTML, built JavaScript and CSS, and local icons. Google Fonts use Cache First after they have been loaded online.
+
+Session and speaker data use Cache First runtime rules (`runtimeCaching` in `nuxt.config.ts`, decision in `docs/schritt3/02-offline-strategie-konzept.md`):
+
+| Rule | Requests | Cache |
+|---|---|---|
+| S1 | `/api/sessions`, `/api/sessions/:id` | `sessions-api-<build>` |
+| S2 | `/program`, `/sessions/:id` and their `_payload.json` | `session-pages-<build>` |
+| S3 | `/speakers/:id` and their `_payload.json` | `speaker-pages-<build>` |
+
+`app/plugins/offline-cache.client.ts` loads `/api/sessions` and `/program` once the service worker controls the page, so both work offline after the first online visit. It also deletes runtime caches from earlier builds.
 
 Build and preview the production app from the project root:
 
@@ -97,7 +107,7 @@ Open `http://localhost:3000` in Chrome. In DevTools:
 1. Open **Application > Manifest** to check the app name, standalone display, colors, start URL, and both icon sizes.
 2. Open **Application > Service Workers** to confirm that `/sw.js` is registered and activated. Under **Cache Storage**, check that the Workbox precache contains `/`, `/my-program`, app scripts, styles, and icons.
 3. Check that Chrome offers **Install app** in the address bar or under the browser's **Save and share** menu. The page must be served from `localhost` or a secure HTTPS origin.
-4. Visit the home page and `/my-program` while online so the worker activates. In **Network**, select **Offline**, then reload each route. Their app shells should still render. Session details in My Program require the separate session-data cache.
+4. Visit the home page while online so the worker activates. In **Network**, select **Offline**, then reload `/`, `/program` and `/my-program`. All three should render, including the sessions saved in My Program. Session and speaker detail pages work offline once they have been opened online.
 
 ## Rendering Strategy
 
@@ -121,6 +131,8 @@ Session data is served at runtime by Nitro server routes in `server/`, which act
 ## Simulating a Schedule Change (ISR)
 
 ISR can be observed reliably with the production server only. In dev mode, the page cache is stored in `.nuxt/cache` and survives restarts, while the simulated schedule is reset on every restart.
+
+The service worker answers session pages from its Cache First cache and never asks the server again, so a browser tab keeps showing the cached time. For this demo, enable **Bypass for network** under **Application > Service Workers** in DevTools, or request the page with `curl`/`Invoke-WebRequest`, which bypasses the service worker.
 
 1. Build and start the production server: `npm run build`, then `npm run preview`
 2. Open `http://localhost:3000/sessions/s01` once, so the page gets cached
