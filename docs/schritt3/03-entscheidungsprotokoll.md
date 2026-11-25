@@ -53,10 +53,10 @@ Beide Teammitglieder haben die Szenarien unabhängig auf dem eigenen Rechner get
 
 | | Rechner 1 (Schmidt) | Rechner 2 (Horvath) |
 |---|---|---|
-| Betriebssystem | Windows 11 Pro | _offen_ |
-| Browser | Chrome 158 | _offen_ |
-| Server | Produktions-Build (`npm run build`, Server aus `.output`) | _offen_ |
-| Offline schalten | Offline-Emulation der DevTools für Seite und Service Worker, zusätzlich Server gestoppt | _offen_ |
+| Betriebssystem | Windows 11 Pro | Windows 11 Pro |
+| Browser | Chrome 158 | Brave v 1.100.59 (Chrome 158)|
+| Server | Produktions-Build (`npm run build`, Server aus `.output`) | Produktions-Build (`npm run build`, Server aus `.output`) |
+| Offline schalten | Offline-Emulation der DevTools für Seite und Service Worker, zusätzlich Server gestoppt | same |
 
 Die Offline-Emulation der DevTools entspricht für den Browser dem Flugmodus: `navigator.onLine` ist `false`, und jede Anfrage ohne Cache-Treffer scheitert.
 
@@ -70,8 +70,8 @@ Die Offline-Emulation der DevTools entspricht für den Browser dem Flugmodus: `n
 
 | Ergebnis | Rechner 1 | Rechner 2 |
 |---|---|---|
-| Übersicht, Filter, Hinzufügen | bestanden | _offen_ |
-| Nie geöffnete Detailseite | Lücke (siehe Entscheidung 4) | _offen_ |
+| Übersicht, Filter, Hinzufügen | bestanden | bestanden |
+| Nie geöffnete Detailseite | Lücke (siehe Entscheidung 4) | Lücke |
 
 ### Szenario 2 – „Mein Programm“ offline nach dem Hinzufügen von Sessions
 
@@ -83,7 +83,7 @@ Die Offline-Emulation der DevTools entspricht für den Browser dem Flugmodus: `n
 
 | Ergebnis | Rechner 1 | Rechner 2 |
 |---|---|---|
-| Anzeige, Entfernen, Persistenz | bestanden | _offen_ |
+| Anzeige, Entfernen, Persistenz | bestanden | bestanden |
 
 ### Szenario 3 – Erstbesuch ohne vorheriges Online-Laden (Grenzfall)
 
@@ -97,22 +97,10 @@ Die Offline-Emulation der DevTools entspricht für den Browser dem Flugmodus: `n
 
 | Ergebnis | Rechner 1 | Rechner 2 |
 |---|---|---|
-| Fehlerseite des Browsers wie erwartet | bestanden | _offen_ |
-
-### Zusatzszenario 4 – Zeitplanänderung bei gefülltem Cache
-
-*Ausgangslage:* Online, der Cache ist befüllt. Session s01 steht in „Mein Programm“ mit 09:00–09:45 Uhr.
-
-*Aktion:* Über `POST /api/simulate/schedule-change` wird s01 auf dem Server um 30 Minuten verschoben. Danach wird „Mein Programm“ online neu geladen.
-
-*Beobachtetes Verhalten:* Der Server liefert 09:30–10:15 Uhr. Der Browser zeigt weiterhin 09:00–09:45 Uhr, weil die Antwort aus dem Cache von Regel S1 kommt und das Netz gar nicht gefragt wird.
-
-*Einordnung:* Das ist die bewusst in Kauf genommene Folge von Cache First (Entscheidung 1). Sobald späte Raum- oder Zeitänderungen zuverlässig ankommen müssen, wäre Stale-While-Revalidate für S1 und S2 die passende Strategie. Die neue Zeit erschiene dann spätestens beim zweiten Öffnen nach der Änderung.
-
-| Ergebnis | Rechner 1 | Rechner 2 |
-|---|---|---|
-| Alte Zeit bleibt sichtbar | wie erwartet | _offen_ |
+| Fehlerseite des Browsers wie erwartet | bestanden |bestanden |
 
 ## Unterschiede zwischen den Rechnern
 
-_offen, nach dem Test auf Rechner 2_
+Es wurden keine Unterschiede festgestellt. 
+Wir haben uns getraut, Microsoft Edge zu öffnen und unsere Seite zu testen. Überraschenderweise wurden alle Tests bestanden....
+
