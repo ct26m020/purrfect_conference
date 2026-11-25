@@ -40,6 +40,14 @@ export default defineNuxtConfig({
           sizes: '512x512',
           type: 'image/png',
         },
+        {
+          // Android schneidet App-Icons rund oder abgerundet zu. Nur ein Kreis mit 80 % Durchmesser
+          // bleibt sicher sichtbar, deshalb liegt das Motiv hier verkleinert auf weißer Fläche.
+          src: '/maskable-icon-512x512.png',
+          sizes: '512x512',
+          type: 'image/png',
+          purpose: 'maskable',
+        },
       ],
     },
     // Keep app-shell and static-asset caching separate from conf data rules
@@ -157,7 +165,11 @@ export default defineNuxtConfig({
     head: {
       htmlAttrs: { lang: 'de' },
       title: 'Purrfect Conference',
-      meta: [{ name: 'description', content: 'A purrfect plan for your conference – Programm und persönlicher Konferenzplan.' }],
+      meta: [
+        { name: 'description', content: 'A purrfect plan for your conference – Programm und persönlicher Konferenzplan.' },
+        // Färbt die Adressleiste ein, gleicher Wert wie theme_color im Manifest
+        { name: 'theme-color', content: '#213B50' },
+      ],
       link: [
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },

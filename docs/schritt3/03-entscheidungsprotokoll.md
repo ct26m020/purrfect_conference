@@ -15,7 +15,7 @@ Beide Teammitglieder haben die Szenarien unabhängig auf dem eigenen Rechner get
 
 *Entscheidung:* Wir wählen *Cache First* für alle drei Wege (Regeln S1 bis S3 in `nuxt.config.ts`). Im Saal zählt die sofortige Antwort, und das Programm ist weitgehend stabil. Gecacht wird nur Status 200, damit kein Fehler im Cache hängen bleibt. Die Cache-Namen enthalten eine Build-Version, damit nach einem neuen Build kein altes HTML auf gelöschte JS-Dateien verweist.
 
-*Konsequenzen:* Bereits geöffnete Inhalte erscheinen offline ohne Verzögerung. Dafür erreicht eine Zeitplanänderung einen Browser mit gefülltem Cache erst nach dem nächsten Build (Szenario 4). Die ISR-Aktualisierung aus Schritt 2 kommt also nur noch bei Browsern ohne gefüllten Cache an. Müssten späte Raumänderungen sicher ankommen, wäre für S1 und S2 Stale-While-Revalidate nötig.
+*Konsequenzen:* Bereits geöffnete Inhalte erscheinen offline ohne Verzögerung. Dafür erreicht eine Zeitplanänderung einen Browser mit gefülltem Cache erst nach dem nächsten Build. Die ISR-Aktualisierung aus Schritt 2 kommt also nur noch bei Browsern ohne gefüllten Cache an. Müssten späte Raumänderungen sicher ankommen, wäre für S1 und S2 Stale-While-Revalidate nötig.
 
 ## 2. App-Shell und statische Assets – Precache
 
